@@ -1,16 +1,22 @@
 package ua.utm.pt2;
 
+import java.awt.BorderLayout;
 import java.awt.Choice;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
@@ -30,6 +36,9 @@ public class MainWindow extends JFrame {
 	private JTabbedPane tabbedPane;
 	private JPanel panel2;
 	private JPanel panel1;
+	private JScrollPane scrollPane;
+	private JPanel panel3;
+	private JLabel lblImage;
 
 	public MainWindow(int width, int height) {
 		setSize(width, height);
@@ -58,7 +67,11 @@ public class MainWindow extends JFrame {
 		btnGetImage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("1");
+				try {
+					Main.setImage(new URL(txtEnterUrlHere.getText()));
+				} catch (MalformedURLException e1) {
+					JOptionPane.showMessageDialog(null, "Invalid URL or no internet connection");
+				}
 			}
 		});
 		panel1.add(btnGetImage);
@@ -82,8 +95,26 @@ public class MainWindow extends JFrame {
 		
 		btnView = new JButton("View");
 		btnView.setBounds(10, 10, 140, 20);
-		btnView.addActionListener(e -> System.out.println("3"));
+		btnView.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(Main.getImage()==null) {return;}
+				lblImage.setIcon(new ImageIcon(Main.getImage()));
+				lblImage.updateUI();
+			}
+		});
 		panel2.add(btnView);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 40, 580, 313);
+		panel2.add(scrollPane);
+		
+		panel3 = new JPanel();
+		scrollPane.setViewportView(panel3);
+		panel3.setLayout(new BorderLayout(0, 0));
+		
+		lblImage = new JLabel("");
+		panel3.add(lblImage, BorderLayout.CENTER);
 		
 		menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 640, 20);

@@ -13,12 +13,12 @@ public class Main {
 	private static BufferedImage image;
 
 	public static void main(String[] args) {
-		window = new MainWindow(640, 480);
+		setWindow(new MainWindow(640, 480));
 	}
 	
 	public static void setImage(URL url) {
 		try {
-			ImageIO.read(url);
+			image = ImageIO.read(url);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -26,7 +26,7 @@ public class Main {
 	
 	public static void setImage(File file) {
 		try {
-			ImageIO.read(file);
+			image = ImageIO.read(file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
